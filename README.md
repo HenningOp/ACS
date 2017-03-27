@@ -1,4 +1,4 @@
-# ACS
+# ACS (Ascertainment by catchment structure)
 Automated ascertainment of sub-basins &amp; zones to capture the spatial organisation of catchments
 
 The ACS tool is designed to perform an automated and impartial sub-basin ascertainment for
