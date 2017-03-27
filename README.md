@@ -4,7 +4,7 @@ Automated ascertainment of sub-basins &amp; zones to capture the spatial organis
 The ACS tool is designed to perform an automated and impartial sub-basin ascertainment for
 natural basins, based on the spatial structure of an arbitrary catchment characteristic. A full
 description of its theoretical background and sequence can be found in:
-Oppel, H. and Schumann, A.: A method to employ the spatial organisation of catchments into semi-distributed rainfall-runoff models, in progress
+Oppel, H. and Schumann, A.: A method to employ the spatial organisation of catchments into semi-distributed hydrological models, in progress
 
 System requirements:
 
