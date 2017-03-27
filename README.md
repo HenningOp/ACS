@@ -7,6 +7,7 @@ description of its theoretical background and sequence can be found in:
 Oppel, H. and Schumann, A.: A method to employ the spatial organisation of catchments into semi-distributed rainfall-runoff models, in progress
 
 System requirements:
+
 	- OS:
 		Windows 7/8/10	64Bit
 	- Script Language:
@@ -16,11 +17,13 @@ System requirements:
 		scipy	Version	0.15.1
 
 Installation:
-	1. Unzip/Copy script to destianation folder
+
+	1. Unzip/Copy script to destination folder
 	2. Unzip/Copy data folder and ACS_OS.pyd to destination folder
 	3. Script can be started without further installation
 
 Running the program:
+
 	1.	User specications
 		- in_root		Foldername where data is stored
 		- indata		Filename of considered catchment characteristic
@@ -49,6 +52,7 @@ Running the program:
 		- spsout()		Write drainage points txt-file
 		- allbasin(TRUE/FALSE)	Write Sub-basin grid (TRUE) with zone indicator (as decimals) (FALSE) without zones
 		- gridout(x, filename)	write grid x to file (filename)
+		
 
 *	PreProcessing_1: Write / Copy information from stream cells to hillslope cells.
 *	PreProcessing_2: Calculate overland flow length to next drainage.
