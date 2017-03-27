@@ -1,0 +1,6 @@
+ACS_v0	## changes from 0.7.0:	- Translated comments
+		##						- Replaced sub-basin dictionary with sub-basin grid (memory thrifty)
+ACS_v1	##						- Implementation of Plateau-zones
+								- Minor changes for general applicability
+								- Removed code artefacts (of previous versions)
+								- Updated README and incode-information
