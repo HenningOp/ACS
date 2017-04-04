@@ -9,6 +9,7 @@ Oppel, H. and Schumann, A.: A method to employ the spatial organisation of catch
 System requirements:
 
 	- OS:
+		Linux
 		Windows 7/8/10	64Bit
 	- Script Language:
 		Python	Version	2.7.10
