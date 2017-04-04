@@ -4,3 +4,5 @@ ACS_v1	##						- Implementation of Plateau-zones
 								- Minor changes for general applicability
 								- Removed code artefacts (of previous versions)
 								- Updated README and incode-information
+								- Enabled OS detection for Linux and Win64
+								- Compiled Fortran watershed function for Linux
