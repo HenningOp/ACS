@@ -1,8 +1,6 @@
 import numpy as np
 import os, time, copy
 from scipy.cluster.vq import whiten, kmeans2
-if 'PROGRAMFILES(X86)' in os.environ:
-    import ACS_Win64 as ws2
 
 """
 #ACS-algorithm for sub-basin ascertainment based on catchment characteristics.
@@ -30,7 +28,7 @@ if 'PROGRAMFILES(X86)' in os.environ:
 #   - call function "gridout" -> return any desired grid options(grid, lower x coordinate, lower y coordinate, cellwidth, file name)
 
 #   Version:        1.0
-#   Date:           24.03.2017
+#   Date:           04.04.2017
 #   Designed by:    Henning
 #
 """
@@ -56,21 +54,18 @@ preff = 1.              #Preference-factor for number of subdivisions
                         # <1. (zones are prefered)
                         # >1. (subdivisions are prefered)
 
-
-##import warnings
-##
-##def fxn():
-##    warnings.warn("deprecated", DeprecationWarning)
-##
-##with warnings.catch_warnings():
-##    warnings.simplefilter("ignore")
-##    fxn()
-##    """ ENDE """
-
-
 """
 Functions
 """
+from sys import platform
+if platform.startswith('linux'):
+    import ACS_linux as ws2
+elif 'PROGRAMFILES(X86)' in os.environ:
+    import ACS_Win64 as ws2
+else:
+    raise NotImplementedError('Your operating system has not been implemented yet')
+
+
 def allout():
     """Output function for GIS-Tool, gives SPS-File, basins and zones"""
 
@@ -554,7 +549,7 @@ def calc_zones(basin, aovar):
     """Calculates zones for given strahler {(Maxvalue mS) - i} and
     OFL-distance o within defined basin. Gives [wetlands, hillslopes, weighted Variance]"""
     
-    global strahler, oflen, dem, dy, sens_zones
+    global strahler, oflen, dem, dy
     #Iteration variables
     i = 0   #Strahler-order
     o = 1   #"Wetland" Width
@@ -768,12 +763,9 @@ while s < len(sps):
             u = calc_zones(bsps, aovar)
             #Save if variance is lowered (independent from threshold)
             if np.sum(u[2]) < np.sum(aovar):
-                if sens_zones == False:
-                    zonal = np.add(zonal, u[0])   #close to stream zones
-                    zonal = np.add(zonal, u[1])   #far from stream zones
-                    zonal = np.add(zonal, u[3])   #plateau zones
-                else:
-                    zonal = np.add(zonal, np.divide(u[0], th))
+                zonal = np.add(zonal, u[0])   #close to stream zones
+                zonal = np.add(zonal, u[1])   #far from stream zones
+                zonal = np.add(zonal, u[3])   #plateau zones
             else:
                 zonal[np.equal(bsps,1)] = 9999   #none
         s += 1
@@ -821,7 +813,6 @@ while s < len(sps):
             w = np.power(np.divide(aovar-np.max(aovar),np.min(aovar)-np.max(aovar)),e)
             th = np.divide(sum(np.multiply(aovar,w)),sum(w))
             done = True
-            print th        
         """Separation"""
         
         #
@@ -856,7 +847,7 @@ while s < len(sps):
                 #Subdivision after ramification (befor confluence) possible?
                 if len(np.argwhere(dsac>0)) > 0:
 
-                    print 'Basin: ' + str(s) + ', Subdivision at Major Ramification ...'  + str(time.strftime('%X'))
+                    print 'Basin: ' + str(s) + ', Debranching major stream ...'  + str(time.strftime('%X'))
 
                     #Take first point with positive difference
                     bp1 = np.argwhere(dsac>0)[0][0]  #(Separationpoint 1)
@@ -1031,7 +1022,6 @@ while s < len(sps):
                     j = 0
                     dvor = 0
                     
-                    print 'Basin: ' + str(s) + ', Searching for possible drainage points ...' + str(time.strftime('%X'))
                     while unten == False:
 
                         #Max FAcc in Non-Target Area
@@ -1085,7 +1075,6 @@ while s < len(sps):
                         if round(deckung,5) == round(dvor,5):
                             unten = True
                         dvor = deckung
-                        print 'Basin: ' + str(s) + ', clipped downstream region ' + str(j+1) + ', coverage  = ' + str(deckung)
                         if deckung >= 0.80 or j == maxIter:
                             unten = True
                         j += 1
@@ -1181,7 +1170,6 @@ while s < len(sps):
                             oben = True
 
                         dvor = deckung
-                        print 'Basin: ' + str(s) + ', clipped upstream region ' + str(j+1) + ', coverage = ' + str(deckung)
                         if deckung >= 0.80 or j == maxIter:
                             oben = True
                         
@@ -1193,7 +1181,8 @@ while s < len(sps):
 
                     if s == 0:
                         oben = False
-                    
+                print 'Basin: ' + str(s) + ', Performed Detachment ...' + str(time.strftime('%X'))
+    
             else:
 
                 #
@@ -1202,7 +1191,6 @@ while s < len(sps):
 
                 i = 0
                 rep = False
-                print 'Basin: ' + str(s) + ', Subdivision at Ramification'
                 while rep == False and i < maxIter:
 
                     #
@@ -1276,7 +1264,6 @@ while s < len(sps):
                         #Try 2: Increase ramification order
                         i += 1
                         if i == maxIter:
-                            print 'Basin: ' + str(s) + ', reached maximum iterations - skipped'
                             obj_fac = np.inf
                             rep = False
 
@@ -1288,12 +1275,8 @@ while s < len(sps):
                 #   2.3.2  - Zonal classification
                 #
 
-                print 'Basin: ' + str(s) + ', Zonal classification'
-
                 u = calc_zones(bsps, aovar)
                 obj_zone = np.sum(u[2])/np.sum(aovar)
-
-                print 'obj_zone = ' + str(obj_zone), 'obj_fac = ' + str(obj_fac)
 
                 #
                 #   2.3.3  - Selection
@@ -1304,7 +1287,7 @@ while s < len(sps):
                 # Alternative A:
                 # FAcc would have been discarded anymay
                 if obj_fac > 1-sepTh:
-                    print 'Basin: ' + str(s) + ', further subdivision not reasonable, saving zones... ' + str(time.strftime('%X'))
+                    print 'Basin: ' + str(s) + ', Performed zonal classification ... ' + str(time.strftime('%X'))
                     if obj_zone < 1.:
                         zonal = np.add(zonal, u[0])   #close to stream                        
                         zonal = np.add(zonal, u[1])   #far from stream
@@ -1316,7 +1299,7 @@ while s < len(sps):
                 # Alternative B:
                 # Zones are significantly(preff) better than FAcc
                 elif obj_zone < preff*obj_fac:
-                    print 'Basin: ' + str(s) + ', zonal classification is superior to subdivision... ' + str(time.strftime('%X'))
+                    print 'Basin: ' + str(s) + ', Performed zonal classification ... ' + str(time.strftime('%X'))
                     zonal = np.add(zonal, u[0])   #close to stream                      
                     zonal = np.add(zonal, u[1])   #far from stream
                     zonal = np.add(zonal, u[3])   #plateau zones
@@ -1325,7 +1308,7 @@ while s < len(sps):
                 # Alternative C:
                 # FAcc (> sepTh) if superior to zones
                 else:
-                    print 'Basin: ' + str(s) + ', subdivision is superior to zones... ' + str(time.strftime('%X'))
+                    print 'Basin: ' + str(s) + ', Performed Debranching ... ' + str(time.strftime('%X'))
                     #Test: FAcc-Watersheds intersecting?
                     snip = np.add(w1, w2)
                     if float(np.sum(np.equal(snip,2.)))/float(max([np.sum(w1), np.sum(w2)])) > 0.1:
