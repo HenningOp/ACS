@@ -35,7 +35,7 @@ from scipy.cluster.vq import whiten, kmeans2
 
 #User specifications
 ##  Input data
-indata = 'gpv.asc'                      #Name of datafile
+indata = 'nfk_kor.asc'                      #Name of datafile
 start = 'Punkte.txt'              #Name of drainage point(s) file
 in_root = 'Input'                       #Folder name of inputdata
 hsteps = 4.
@@ -847,7 +847,7 @@ while s < len(sps):
                 #Subdivision after ramification (befor confluence) possible?
                 if len(np.argwhere(dsac>0)) > 0:
 
-                    print 'Basin: ' + str(s) + ', Debranching major stream ...'  + str(time.strftime('%X'))
+                    print 'Basin: ' + str(s) + ', Pruning major stream basins ...'  + str(time.strftime('%X'))
 
                     #Take first point with positive difference
                     bp1 = np.argwhere(dsac>0)[0][0]  #(Separationpoint 1)
@@ -1308,7 +1308,7 @@ while s < len(sps):
                 # Alternative C:
                 # FAcc (> sepTh) if superior to zones
                 else:
-                    print 'Basin: ' + str(s) + ', Performed Debranching ... ' + str(time.strftime('%X'))
+                    print 'Basin: ' + str(s) + ', Performed Pruning ... ' + str(time.strftime('%X'))
                     #Test: FAcc-Watersheds intersecting?
                     snip = np.add(w1, w2)
                     if float(np.sum(np.equal(snip,2.)))/float(max([np.sum(w1), np.sum(w2)])) > 0.1:
