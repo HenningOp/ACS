@@ -59,6 +59,8 @@ Running the program:
 *	PreProcessing_2: Calculate overland flow length to next drainage.
 *	PreProcessing Scripts/Tools also available at http:\\...
 
+Implementation of the ACS-Tool for GIS applications ArcGIS and QGIS can be found in the folder GIS-Tools. An additional GIS-ReadMe
+sums up installation, required GIS-specifications and drawbacks of the these applications.
 
 Additional information:
 	- See VersionLog.txt for documentation of changes and bugfixes in the code.
