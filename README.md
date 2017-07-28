@@ -63,5 +63,6 @@ Implementation of the ACS-Tool for GIS applications ArcGIS and QGIS can be found
 sums up installation, required GIS-specifications and drawbacks of the these applications.
 
 Additional information:
+
 	- See VersionLog.txt for documentation of changes and bugfixes in the code.
 	- If anything is unclear or you found bugs (i'm pretty shure there are plenty of 'em) please feel free to contact me (henning.oppel@rub.de)!
