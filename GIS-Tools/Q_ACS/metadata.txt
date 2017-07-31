@@ -1,0 +1,39 @@
+# This file contains metadata for your plugin. Since 
+# version 2.0 of QGIS this is the proper way to supply 
+# information about a plugin. The old method of 
+# embedding metadata in __init__.py will 
+# is no longer supported since version 2.0.
+
+# This file should be included when you package your plugin.# Mandatory items:
+
+[general]
+name=acs_subdivide
+qgisMinimumVersion=2.0
+description=Ascertainment by Catchment Structure
+version=0.1
+author=Henning Oppel and Laura Bienstein
+email=henning.oppel@rub.de
+
+about=This tool is designed to perform a catchment partition based on the spatial organisation of any specified catchment characteristic. Tool returns a subdivision of the given basin into sub-basins and zones (3 types). Objective is to reduce to the streamflow orientated heterogeneity of the given input characteristic. All data specified has to cover an identical spatial extent. Please note that the ArcGIS Toolbox implementation is, due to a lack of capability to execute FORTRAN –routines, extremely slow. For large-scale applications (meso-scaling catchments) it is highly recommended to use the stand-alone python-Implementation of the ACS-algorithm! Recent updates, manual and support at github.com/HenningOp/ACS. Scientific background is given in Oppel and Schumann (2017): “A method to employ the spatial organisation of catchments into semi-distributed rainfall–runoff models”, DOI: 10.5194/hess-2017-218
+
+tracker=github.com/HenningOp/ACS
+repository=github.com/HenningOp/ACS
+# End of mandatory metadata
+
+# Recommended items:
+
+# Uncomment the following line and add your changelog:
+# changelog=
+
+# Tags are comma separated with spaces allowed
+tags=
+
+homepage=
+category=Raster
+icon=icon.png
+# experimental flag
+experimental=True
+
+# deprecated flag (applies to the whole plugin, not just a single version)
+deprecated=False
+
